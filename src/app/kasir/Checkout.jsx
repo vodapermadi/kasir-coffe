@@ -26,6 +26,8 @@ const Checkout = ({changeMode,addQtyItem,reduceQtyItem,removeItem,checkOutOrder,
                                                 <div className="flex items-center">
                                                     <Image
                                                         className="h-16 w-16 mr-4"
+                                                        width={64}
+                                                        height={64}
                                                         src={`https://tailwindflex.com/images/logo.svg`}
                                                         alt="Product"
                                                     />

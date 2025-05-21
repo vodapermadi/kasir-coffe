@@ -108,7 +108,7 @@ const CashierPage = () => {
     return (
         <>
             {mode === "select_menu" && products.length > 0 && (
-                <SelectMenuKasir products={products} />
+                <SelectMenuKasir products={products} changeMode={changeMode} />
             )}
 
             {mode === "checkout" && (
