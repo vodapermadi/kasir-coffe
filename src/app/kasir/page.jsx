@@ -2,6 +2,7 @@
 
 import { convertCurrentcy } from "@/utils/helper"
 import { supabase } from "@/utils/supabase"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
@@ -143,9 +144,9 @@ const CashierPage = () => {
                                                 <tr key={row.id}>
                                                     <td className="py-4">
                                                         <div className="flex items-center">
-                                                            <img
+                                                            <Image
                                                                 className="h-16 w-16 mr-4"
-                                                                src="https://tailwindflex.com/images/logo.svg"
+                                                                src={`https://tailwindflex.com/images/logo.svg`}
                                                                 alt="Product"
                                                             />
                                                             <span className="font-semibold">{row.name}</span>
