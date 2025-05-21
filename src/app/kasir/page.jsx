@@ -9,10 +9,23 @@ const CashierPage = () => {
     const [mode, setMode] = useState("select_menu")
     const [products, setProducts] = useState([])
     const [cart, setCart] = useState([])
-const router = useRouter()
+    const router = useRouter()
 
     useEffect(() => {
-        getMenu()
+        const getMenu = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from("products")
+                    .select("*, categories(*)")
+    
+                if (error) throw error
+                setProducts(data)
+            } catch (error) {
+                alert(error.message)
+            }
+        }
+
+        return () => getMenu()
     }, [])
 
     const changeMode = (name, data = null) => {
@@ -48,28 +61,15 @@ const router = useRouter()
         setCart((prev) => prev.filter(row => row.id !== id))
     }
 
-    const getMenu = async () => {
+    const checkOutOrder = async () => {
         try {
-            const { data, error } = await supabase
-                .from("products")
-                .select("*, categories(*)")
+            const sumAllQty = cart.reduce((total, item) => total + item.qty, 0)
+            const sumTotal = cart.reduce((total, item) => total + item.price * item.qty, 0)
 
-            if (error) throw error
-            setProducts(data)
-        } catch (error) {
-            alert(error.message)
-        }
-    }
-    
-    const checkOutOrder = async() => {
-        try {
-            const sumAllQty = cart.reduce((total,item) => total + item.qty ,0)
-            const sumTotal = cart.reduce((total,item) => total + item.price * item.qty ,0)
-            
-            const {data:transactions_data ,error:transactions_error} = await supabase.from("transactions").insert([
+            const { data: transactions_data, error: transactions_error } = await supabase.from("transactions").insert([
                 {
-                    amount:sumAllQty,
-                    total:sumTotal
+                    amount: sumAllQty,
+                    total: sumTotal
                 }
             ]).select("*")
 
@@ -79,21 +79,21 @@ const router = useRouter()
             cart.forEach((row) => {
                 tempData.push({
                     id_transaction: transactions_data[0].id,
-                    product_name:row.name,
-                    price:row.price,
-                    quantity:row.qty,
-                    sub_total:row.price * row.qty
+                    product_name: row.name,
+                    price: row.price,
+                    quantity: row.qty,
+                    sub_total: row.price * row.qty
                 })
             })
 
-            const {data:transaction_item, error: transaction_error} = await supabase.from("transaction_items").insert(tempData)
-    
-            if(transactions_error) throw transactions_error
-            else if(transaction_error) throw transaction_error
+            const { data: transaction_item, error: transaction_error } = await supabase.from("transaction_items").insert(tempData)
+
+            if (transactions_error) throw transactions_error
+            else if (transaction_error) throw transaction_error
             else alert("success buy")
         } catch (error) {
             alert(error.message)
-        }finally{
+        } finally {
             router.refresh()
             console.log("success")
         }
