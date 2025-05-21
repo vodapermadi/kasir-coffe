@@ -1,5 +1,4 @@
 "use client"
-
 import { convertCurrentcy } from "@/utils/helper"
 import { supabase } from "@/utils/supabase"
 import Image from "next/image"
@@ -26,7 +25,7 @@ const CashierPage = () => {
             }
         }
 
-        return () => getMenu()
+        getMenu()
     }, [])
 
     const changeMode = (name, data = null) => {
@@ -109,7 +108,7 @@ const CashierPage = () => {
             {mode === "select_menu" && (
                 <div className="w-full flex justify-center items-center">
                     <div className="grid w-3/4 grid-cols-3 gap-3">
-                        {products.map((row) => (
+                        {products.length > 0 && products.map((row) => (
                             <div
                                 key={row.id}
                                 onClick={() => changeMode("checkout", row)}
