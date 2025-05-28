@@ -6,7 +6,7 @@ import ListItemTransaction from "./ListItemTransaction"
 
 const TransactionPage = () => {
     const [transactions, setTransactions] = useState([])
-const [transactionItem,setTransactionItem] = useState([])
+    const [transactionItem, setTransactionItem] = useState([])
 
     useEffect(() => {
         getTransactions()
@@ -15,7 +15,7 @@ const [transactionItem,setTransactionItem] = useState([])
 
     const getTransactions = async () => {
         try {
-            const { data, error } = await supabase.from("transactions").select("*")
+            const { data, error } = await supabase.from("transactions").select("*").order("created_at", { ascending: false })
             if (error) throw error
             else setTransactions(data)
         } catch (error) {
@@ -23,9 +23,9 @@ const [transactionItem,setTransactionItem] = useState([])
         }
     }
 
-    const getTransactionItem = async() => {
+    const getTransactionItem = async () => {
         try {
-            const { data, error } = await supabase.from("transaction_items").select("*")
+            const { data, error } = await supabase.from("transaction_items").select("*").order("created_at", { ascending: false })
             if (error) throw error
             else setTransactionItem(data)
         } catch (error) {

@@ -1,8 +1,10 @@
 "use client"
 import { convertCurrentcy } from "@/utils/helper"
 import Image from "next/image"
+import { useState } from "react"
 
-const Checkout = ({changeMode,addQtyItem,reduceQtyItem,removeItem,checkOutOrder,calculateTotal,cart}) => {
+const Checkout = ({ changeMode, addQtyItem, reduceQtyItem, removeItem, checkOutOrder, calculateTotal, cart }) => {
+    const [loading, setLoading] = useState(false)
     return (
         <div className="h-screen py-8">
             <div className="container mx-auto px-4">
@@ -85,8 +87,13 @@ const Checkout = ({changeMode,addQtyItem,reduceQtyItem,removeItem,checkOutOrder,
                                 <span className="font-semibold">Total</span>
                                 <span className="font-semibold">{convertCurrentcy(calculateTotal())}</span>
                             </div>
-                            <button onClick={() => checkOutOrder()} className="bg-amber-500 font-semibold text-white py-2 px-4 rounded-lg mt-4 w-full">
-                                Checkout
+                            <button 
+                            disabled={loading}
+                            onClick={() => {
+                                checkOutOrder()
+                                setLoading(true)
+                            }} className={`bg-amber-500 font-semibold text-white py-2 px-4 rounded-lg mt-4 w-full`}>
+                                {loading ? "loading" : "checkout"}
                             </button>
                         </div>
                     </div>

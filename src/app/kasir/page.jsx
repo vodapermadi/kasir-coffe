@@ -1,7 +1,5 @@
 "use client"
-import { convertCurrentcy } from "@/utils/helper"
 import { supabase } from "@/utils/supabase"
-
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import SelectMenuKasir from "./SelectMenu"
@@ -75,8 +73,6 @@ const CashierPage = () => {
                 }
             ]).select("*")
 
-            console.log(transactions_data)
-
             let tempData = []
             cart.forEach((row) => {
                 tempData.push({
@@ -93,11 +89,10 @@ const CashierPage = () => {
             if (transactions_error) throw transactions_error
             else if (transaction_error) throw transaction_error
             else alert("success buy")
+
+            window.location.reload()
         } catch (error) {
             alert(error.message)
-        } finally {
-            router.refresh()
-            console.log("success")
         }
     }
 
@@ -108,7 +103,7 @@ const CashierPage = () => {
     return (
         <>
             {mode === "select_menu" && products.length > 0 && (
-                <SelectMenuKasir products={products} changeMode={changeMode} />
+                <SelectMenuKasir products={products} changeMode={changeMode} cart={cart} />
             )}
 
             {mode === "checkout" && (

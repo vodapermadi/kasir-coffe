@@ -1,9 +1,11 @@
 "use client"
 import { supabase } from "@/utils/supabase"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 const CreateProduct = () => {
     const [categories, setCategories] = useState([])
+    const router = useRouter()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -26,15 +28,17 @@ const CreateProduct = () => {
                 {
                     name: formdata.get("name"),
                     id_categories: formdata.get("id_categorie"),
-                    price: Number(formdata.get("price"))
+                    price: parseFloat(formdata.get("price"))
                 }
             ])
 
             if(error) throw error
             else alert("success create")
-            console.log(data)
+            
         } catch (error) {
             alert(error.message)
+        }finally{
+            router.push("/products")
         }
     }
 
@@ -44,7 +48,7 @@ const CreateProduct = () => {
                 <div className="text-2xl py-4 px-6 bg-amber-900 text-white text-center font-bold uppercase">
                     Add Menu
                 </div>
-                <form className="py-4 px-6" onSubmit={handleSubmit}>
+                <form className="py-4 px-6" onSubmit={handleSubmit} method="post">
                     <div className="mb-4">
                         <label className="block text-gray-700 font-bold mb-2" htmlFor="name">
                             Product
@@ -59,7 +63,7 @@ const CreateProduct = () => {
                         </label>
                         <input
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="name" name="price" type="number" placeholder="Enter price" />
+                            id="name" name="price" type="text" placeholder="Enter price" />
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700 font-bold mb-2" htmlFor="service">

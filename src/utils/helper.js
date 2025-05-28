@@ -23,3 +23,5 @@ export const getPaginationRange = (currentPage, totalPages, delta = 1) => {
 
   return [...new Set(range)]
 }
+
+export const formatDate = (isoDate) => new Date(isoDate).toISOString().split('T')[0]

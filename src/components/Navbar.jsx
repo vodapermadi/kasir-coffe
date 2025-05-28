@@ -16,6 +16,9 @@ const NavbarComponent = () => {
                             <Link href={'/products'}>Products</Link>
                         </li>
                         <li>
+                            <Link href={'/stocks'}>Stocks</Link>
+                        </li>
+                        <li>
                             <Link href={'/transactions'}>Transaction</Link>
                         </li>
                     </ul>
